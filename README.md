@@ -1,4 +1,4 @@
-# Agentic AI Multi-Modal Assistant
+# Omni-Agent (by Parallel Minds)
 
 A deployed Agentic AI application that processes text, images, PDFs, and audio simultaneously. It features autonomous planning, tool orchestration, cross-input reasoning, and a complete local RAG (Retrieval-Augmented Generation) pipeline.
 

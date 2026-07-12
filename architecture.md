@@ -1,6 +1,6 @@
 # System Architecture
 
-The Agentic AI Multi-Modal Assistant is designed as a custom, lightweight ReAct loop that avoids bloated orchestration frameworks. 
+The Omni-Agent (by Parallel Minds) is designed as a custom, lightweight ReAct loop that avoids bloated orchestration frameworks. 
 
 ## High-Level Architecture Diagram
 
