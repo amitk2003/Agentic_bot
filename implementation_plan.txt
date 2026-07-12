@@ -1,0 +1,110 @@
+Agentic AI Multi-Modal Assistant — Gemini Implementation Plan
+=============================================================
+
+Build a deployed Agentic AI application that processes text, images, PDFs, and audio simultaneously, with autonomous planning, tool orchestration, and cross-input reasoning.
+
+-------------------------------------------------------------
+USER REVIEW REQUIRED
+-------------------------------------------------------------
+
+[IMPORTANT] Gemini API Integration:
+This plan has been completely rewritten to use Google Gemini API (gemini-2.0-flash or gemini-1.5-pro) exclusively. No OpenAI keys are required.
+
+[IMPORTANT] Custom Agent Loop (No Frameworks):
+As requested, we will NOT use LangChain or LangGraph. We will implement a custom ReAct (Reason + Act) loop using Gemini's native response_schema structured outputs and function calling capabilities. This perfectly fulfills the "prove you can code" requirement.
+
+-------------------------------------------------------------
+OPEN QUESTIONS
+-------------------------------------------------------------
+
+1. Audio Strategy: Gemini natively supports multimodal audio input. Should we pass audio files directly to Gemini for transcription/summarization, or use a local Python library like SpeechRecognition to strictly separate the "Audio Tool" from the LLM? (I recommend passing directly to Gemini for highest accuracy without extra keys).
+2. Deployment Platform: The plan targets Render (free tier, Docker-based). Is this acceptable for your public URL requirement?
+
+-------------------------------------------------------------
+ARCHITECTURE OVERVIEW (Custom Loop)
+-------------------------------------------------------------
+
+    User Input (Text + Files)
+            |
+            v
+      FastAPI Backend
+            |
+            v
+   Pre-processing (PDF/OCR text extraction)
+            |
+            v
+   Agent Planner (Gemini with response_schema)
+           / \
+          /   \
+is_ambiguous=True  is_ambiguous=False
+        |           |
+        v           v
+  Follow-up    Tool Executor (Python loop)
+  Question          |
+                    v
+               Tool Registry (youtube, summarize, code, compare)
+                    |
+                    v
+               Synthesizer (Gemini Prompt)
+                    |
+                    v
+               Frontend Display (Answer + Plan Trace)
+
+-------------------------------------------------------------
+TECH STACK (Gemini Edition)
+-------------------------------------------------------------
+
+Layer                  | Technology                          | Rationale
+-----------------------|-------------------------------------|------------------------------------------
+Backend Framework      | FastAPI                             | Production-grade, async, file upload support
+LLM & Reasoning        | Gemini (gemini-2.0-flash)           | Core brain, intent detection, and synthesis
+PDF Extraction         | PyMuPDF (fitz)                      | High-speed PDF parsing
+OCR (Fallback)         | pytesseract + Pillow                | Lightweight image text extraction
+YouTube                | youtube-transcript-api              | Fetch transcripts without API key
+Audio Processing       | Gemini Native / pydub               | Gemini supports audio natively, pydub for chunking if needed
+Vector Search (RAG)    | FAISS                               | In-memory similarity search for large docs
+Orchestration          | Custom Python Loop                  | Zero framework dependency
+Frontend               | Vanilla HTML/CSS/JS                 | Custom chat UI with trace panel
+
+-------------------------------------------------------------
+IMPLEMENTATION DETAILS
+-------------------------------------------------------------
+
+1. Custom Orchestrator
+We will define Pydantic models for the execution plan:
+
+    class ExecutionPlan(BaseModel):
+        is_ambiguous: bool
+        follow_up_question: str | None
+        tool_calls: list[ToolCall]
+        reasoning: str
+
+We pass this schema to Gemini using response_schema=ExecutionPlan. Gemini returns a strict JSON object that we parse and execute.
+
+2. Tools
+We will register Python functions as tools. When the planner selects a tool, our Executor loop calls the Python function and appends the result to a context window.
+
+Available Tools:
+1. fetch_youtube_transcript
+2. summarize_text (1-line, 3 bullets, 5-sentence formats)
+3. analyze_sentiment
+4. explain_code (complexity, bugs)
+5. qa_search (RAG for large docs)
+6. compare_documents
+
+3. Fulfilling Test Cases
+* Test Case 1 (Audio): Extract audio, pass to Gemini Audio tool -> route to summarize_text.
+* Test Case 2 (PDF + Query): Extract PDF text -> Planner routes to qa_search -> returns action items.
+* Test Case 3 (Image Code): Tesseract OCR (or Gemini native vision) -> route to explain_code tool.
+* Test Case 4 (PDF URL to YT): Extract PDF -> URL detected -> Planner routes to fetch_youtube_transcript -> routes to summarize_text.
+* Test Case 5 (Audio + PDF Compare): Extract audio + PDF text -> Planner routes to compare_documents.
+
+-------------------------------------------------------------
+IMPLEMENTATION ORDER
+-------------------------------------------------------------
+1. Scaffold: Config, environment, models (schemas.py).
+2. Tools Registry: Define the tool signatures.
+3. Agent Core: Write planner.py, executor.py, synthesizer.py.
+4. FastAPI: Endpoint to handle multi-part uploads.
+5. Frontend: HTML/JS UI.
+6. Deployment: Dockerfile and Render setup.

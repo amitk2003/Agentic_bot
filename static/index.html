@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Left Sidebar -->
+        <nav class="left-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">✦</div>
+                    <span>Agentic AI</span>
+                </div>
+            </div>
+            <button class="new-chat-btn" id="new-chat-btn">
+                <span>+</span> New Chat
+            </button>
+            <div id="conversation-list" class="conversation-list"></div>
+            <div class="sidebar-section">
+                <p class="section-label">Capabilities</p>
+                <div class="capability-item">📄 PDF Parsing & OCR</div>
+                <div class="capability-item">🖼️ Image Recognition</div>
+                <div class="capability-item">🎙️ Audio Transcription</div>
+                <div class="capability-item">🎬 YouTube Summaries</div>
+                <div class="capability-item">💻 Code Explanation</div>
+                <div class="capability-item">📊 Sentiment Analysis</div>
+            </div>
+            <div class="sidebar-footer">
+                <div class="model-badge">⚡ Gemini 2.0 Flash</div>
+            </div>
+        </nav>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <header class="chat-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+                <h1>Agentic AI Assistant</h1>
+                <div class="header-actions">
+                    <button class="header-btn" id="toggle-sidebar-btn" title="Toggle Plan Trace">
+                        <span>⚙️</span> Trace
+                    </button>
+                </div>
+            </header>
+
+            <div id="chat-history" class="chat-history">
+                <div class="welcome-screen" id="welcome-screen">
+                    <div class="welcome-icon">✦</div>
+                    <h2>Agentic AI Assistant</h2>
+                    <p>Upload files, paste code, or ask anything. I autonomously plan, execute tools, and deliver results.</p>
+                    <div class="welcome-cards">
+                        <div class="welcome-card" onclick="document.getElementById('query-input').value='Summarize this YouTube lecture: '; document.getElementById('query-input').focus();">
+                            <span>🎬</span>
+                            <p>Summarize a YouTube video</p>
+                        </div>
+                        <div class="welcome-card" onclick="document.getElementById('file-upload').click();">
+                            <span>📄</span>
+                            <p>Upload a PDF and ask questions</p>
+                        </div>
+                        <div class="welcome-card"
+     onclick="document.getElementById('query-input').value='Explain this code:\n\ndef hello():\n    print(&quot;world&quot;)';
+     document.getElementById('query-input').focus();">
+    <span>💻</span>
+    <p>Explain a code snippet</p>
+</div>
+                        <div class="welcome-card" onclick="document.getElementById('file-upload').click();">
+                            <span>🖼️</span>
+                            <p>Extract text from an image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div id="file-preview-container" class="file-preview-container"></div>
+                <div id="edit-banner" class="edit-banner" style="display:none;">
+                    <span>✏️ Editing message</span>
+                    <button onclick="cancelEdit()">Cancel</button>
+                </div>
+                <form id="chat-form" class="chat-form">
+                    <div class="input-wrapper">
+                        <label for="file-upload" class="upload-btn" title="Attach files">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                            <input type="file" id="file-upload" multiple accept=".pdf,.png,.jpg,.jpeg,.mp3,.wav,.m4a,.txt,.py,.js,.ts,.java,.cpp,.c,.html,.css" style="display: none;">
+                        </label>
+                        <textarea id="query-input" placeholder="Message Agentic AI..." rows="1" autocomplete="off"></textarea>
+                        <button type="submit" id="send-btn" title="Send message">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </button>
+                    </div>
+                    <p class="input-hint">Shift+Enter for new line · Attach files with 📎</p>
+                </form>
+            </div>
+        </main>
+
+        <!-- Right Sidebar (Plan Trace & Extracted Text) -->
+        <aside class="right-sidebar" id="right-sidebar">
+            <div class="right-sidebar-header">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="trace-tab">🔗 Plan Trace</button>
+                    <button class="tab-btn" data-tab="extracted-tab">📝 Extracted</button>
+                </div>
+                <button class="close-sidebar-btn" id="close-sidebar-btn">✕</button>
+            </div>
+
+            <div id="trace-tab" class="tab-content active">
+                <div id="plan-trace-container" class="trace-container">
+                    <p class="empty-state">Agent activity will appear here once you send a query.</p>
+                </div>
+            </div>
+
+            <div id="extracted-tab" class="tab-content">
+                <div id="extracted-text-container" class="extracted-container">
+                    <p class="empty-state">Extracted file contents will appear here.</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="/static/app.js?v=4"></script>
+</body>
+</html>

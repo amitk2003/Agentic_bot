@@ -1,0 +1,79 @@
+# ===========================
+# Core Framework
+# ===========================
+fastapi>=0.116.0
+uvicorn[standard]>=0.35.0
+python-multipart>=0.0.20
+aiofiles>=24.1.0
+
+# ===========================
+# Groq (OpenAI Compatible)
+# ===========================
+openai>=2.45.0
+
+# ===========================
+# PDF Processing
+# ===========================
+PyMuPDF>=1.26.0
+
+# ===========================
+# OCR
+# ===========================
+pytesseract>=0.3.13
+Pillow>=11.3.0
+
+# ===========================
+# Audio Processing
+# ===========================
+pydub>=0.25.1
+
+# Optional: Local Whisper (only if you decide to use it)
+# faster-whisper>=1.1.1
+
+# ===========================
+# YouTube Transcript
+# ===========================
+youtube-transcript-api>=1.2.4
+
+# ===========================
+# Vector Search
+# ===========================
+faiss-cpu>=1.12.0
+
+# ===========================
+# Numerical
+# ===========================
+numpy>=2.3.0
+
+# ===========================
+# Token Counting
+# ===========================
+tiktoken>=0.9.0
+
+# ===========================
+# Database
+# ===========================
+aiosqlite>=0.21.0
+
+# ===========================
+# Environment Variables
+# ===========================
+python-dotenv>=1.1.0
+
+# ===========================
+# HTTP Client
+# ===========================
+httpx>=0.28.1
+
+# ===========================
+# Testing
+# ===========================
+pytest>=8.4.1
+pytest-asyncio>=1.0.0
+# pdf parsing +ocr fallback
+
+
+opencv-python>=4.12.0
+# image extraction from pdf 
+pdf2image>=1.17.0
+requests>=2.32.0
