@@ -4,26 +4,40 @@ import logging
 
 
 logger = logging.getLogger(__name__)
+import re
 
-async def execute_plan(plan: ExecutionPlan) -> list[ToolResult]:
+async def execute_plan(plan: ExecutionPlan, files: list = None) -> list[ToolResult]:
     """
     Iterates through the tool calls in the execution plan and runs them.
     Supports output chaining: if a parameter value contains '{{previous_output}}',
     it is replaced with the result of the previous tool.
+    Also supports '{{file:filename}}' to inject extracted file text.
     """
     results = []
     previous_output = None
 
     for call in plan.tool_calls:
         try:
-            # Replace {{previous_output}} placeholders in parameters
+            # Replace placeholders in parameters
             resolved_params = {}
             for key, value in call.parameters.items():
-                if isinstance(value, str) and "{{previous_output}}" in value:
-                    if previous_output is not None:
-                        resolved_params[key] = value.replace("{{previous_output}}", str(previous_output))
-                    else:
-                        resolved_params[key] = value
+                if isinstance(value, str):
+                    val = value
+                    if "{{previous_output}}" in val or "{previous_output}" in val:
+                        if previous_output is not None:
+                            val = val.replace("{{previous_output}}", str(previous_output))
+                            val = val.replace("{previous_output}", str(previous_output))
+                            
+                    if files and ("{{file:" in val or "{file:" in val):
+                        matches = re.findall(r'\{+file:([^}]+)\}+', val)
+                        for match in matches:
+                            filename = match.strip()
+                            file_obj = next((f for f in files if f.filename == filename), None)
+                            if file_obj and file_obj.extracted_text:
+                                val = val.replace(f"{{{{file:{match}}}}}", file_obj.extracted_text)
+                                val = val.replace(f"{{file:{match}}}", file_obj.extracted_text)
+                                
+                    resolved_params[key] = val
                 else:
                     resolved_params[key] = value
 

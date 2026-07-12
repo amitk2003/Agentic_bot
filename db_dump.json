@@ -1,0 +1,42 @@
+[
+  {
+    "role": "user",
+    "content": "Explain this code:\r\n\r\n#include <bits/stdc++.h>\r\nusing namespace std;\r\n\r\nstring longestPalindromeSubseq(string s) {\r\n    int n = s.size();\r\n\r\n    vector<vector<int>> dp(n, vector<int>(n, 0));\r\n\r\n    // Base case\r\n    for (int i = 0; i < n; i++)\r\n        dp[i][i] = 1;\r\n\r\n    // Fill DP table\r\n    for (int len = 2; len <= n; len++) {\r\n        for (int i = 0; i + len - 1 < n; i++) {\r\n            int j = i + len - 1;\r\n\r\n            if (s[i] == s[j]) {\r\n                if (len == 2)\r\n                    dp[i][j] = 2;\r\n                else\r\n                    dp[i][j] = 2 + dp[i + 1][j - 1];\r\n            } else {\r\n                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);\r\n            }\r\n        }\r\n    }\r\n\r\n    int length = dp[0][n - 1];\r\n    string ans(length, ' ');\r\n\r\n    int start = 0;\r\n    int end = length - 1;\r\n\r\n    int i = 0, j = n - 1;\r\n\r\n    while (i <= j) {\r\n        if (s[i] == s[j]) {\r\n            ans[start] = s[i];\r\n            ans[end] = s[j];\r\n            start++;\r\n            end--;\r\n            i++;\r\n            j--;\r\n        } else if (dp[i + 1][j] >= dp[i][j - 1]) {\r\n            i++;\r\n        } else {\r\n            j--;\r\n        }\r\n    }\r\n\r\n    return ans;\r\n}\r\n\r\nint main() {\r\n    string s = \"bbbab\";\r\n\r\n    cout << \"Longest Palindromic Subsequence: \"\r\n         << longestPalindromeSubseq(s) << endl;\r\n}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Summary of the lecture (video\u202fbAzYKBx5Tlo)**  \n\n- **Current job\u2011market reality**  \n  - In the first half of 2026, India lost\u202f>\u202f168,000 tech jobs.  \n  - Fresh\u2011er hiring dropped by ~80\u202f% (from 100\u202f% to 20\u202f% of previous levels).  \n  - Major employers (e.g., TCS, Oracle) cut offers drastically (TCS:\u202f25,000\u202foffers vs. 400\u202fpreviously).  \n  - Oracle revoked offers for IIT/NIIT students after closing its AI\u2011health division, illustrating that layoffs were driven by corporate restructuring, not AI.\n\n- **Why the market collapsed**  \n  - The \u201cbody\u2011shop\u201d model (hiring many freshers, training them, then assigning them to client projects) was already unsustainable.  \n  - COVID\u201119 forced a correction: companies realized they didn\u2019t need so many junior hires.  \n  - AI accelerated this correction by making routine coding tasks trivial, but it didn\u2019t *create* the problem; it simply exposed an already fragile system.\n\n- **Misconception about AI**  \n  - AI hasn\u2019t \u201cstepped on\u201d jobs; it has highlighted that many roles were replaceable long before AI existed.  \n  - The real issue is that the industry over\u2011valued rote learning (DSA, coding contests) while under\u2011valuing practical, system\u2011level skills.\n\n- **What the \u201cnew game\u201d looks like**  \n  1. **Global Capability Centers (GCCs)** \u2013 Google, Amazon, JP Morgan, etc., will add 120k\u2011140k new roles that require AI, cloud, and data skills.  \n  2. **AI orchestration** \u2013 Treat AI as a junior developer: use it to write boilerplate, debug, and review, but not as a magic button.  \n  3. **System design** \u2013 Focus on architecture, scalability, and integration\u2014areas AI struggles with.  \n  4. **Public building** \u2013 Publish projects on GitHub, LinkedIn, Discord, etc. Demonstrate real value rather than just certificates.\n\n- **Who will thrive**  \n  - Freshers who are *builders*: they create real projects, understand system design, and can work with AI tools.  \n  - Those who rely solely on AI for code generation (the \u201cmagic\u2011button\u201d crowd) are replaceable.  \n  - The new metric is *ability* and *portfolio* rather than a degree.\n\n- **Take\u2011away**  \n  - AI didn\u2019t take jobs; it revealed that the existing hiring model was flawed.  \n  - The future belongs to those who can combine AI with deep technical understanding and real\u2011world product building.  \n  - The speaker urges viewers to shift focus from rote learning to practical skills, public exposure, and AI\u2011augmented development."
+  },
+  {
+    "role": "user",
+    "content": "Summarize this YouTube lecture: https://www.youtube.com/watch?v=bAzYKBx5Tlo"
+  },
+  {
+    "role": "assistant",
+    "content": "Antigravity is the idea of a force or technology that counteracts or cancels gravity, allowing objects to float or levitate. In physics, gravity is a fundamental interaction that pulls masses together, and there\u2019s no known natural \u201canti\u2011gravity\u201d force that does the opposite. Some speculative concepts\u2014like negative mass, exotic matter, or manipulating spacetime curvature\u2014have been proposed, but none have been demonstrated experimentally.\n\nIn everyday life, we see \u201cantigravity\u201d effects through technologies that create lift or buoyancy, such as:\n\n- **Magnetic levitation (maglev)**: Uses magnetic fields to lift and propel trains or objects.\n- **Aerodynamic lift**: Airplane wings generate lift that opposes gravity.\n- **Electrostatic levitation**: Charged particles can be suspended in a field.\n\nThese are not true antigravity in the sense of canceling gravity itself; they simply produce forces that balance or overcome it. The term is also popular in science fiction, where it\u2019s often portrayed as a mysterious, powerful technology that can defy gravity outright. As of now, antigravity remains a theoretical concept rather than a practical reality."
+  },
+  {
+    "role": "user",
+    "content": "what is antigravity"
+  },
+  {
+    "role": "assistant",
+    "content": "Unable to fetch transcript.\n\nCould not retrieve a transcript for the video https://www.youtube.com/watch?v=bAzYKBx5Tlo! This is most likely caused by:\n\nNo transcripts were found for any of the requested language codes: ('en',)\n\nFor this video (bAzYKBx5Tlo) transcripts are available in the following languages:\n\n(MANUALLY CREATED)\nNone\n\n(GENERATED)\n - hi (\"Hindi (auto-generated)\")\n\n(TRANSLATION LANGUAGES)\nNone\n\nIf you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!\n\n---\n\nI\u2019m ready to summarize the transcript, but I need the actual text first. Could you please provide the transcript you\u2019d like summarized?"
+  },
+  {
+    "role": "user",
+    "content": "Summarize this YouTube lecture: https://www.youtube.com/watch?v=bAzYKBx5Tlo"
+  },
+  {
+    "role": "assistant",
+    "content": "I could not find the answer in the provided context."
+  },
+  {
+    "role": "user",
+    "content": "Sample Test Cases"
+  },
+  {
+    "role": "assistant",
+    "content": "Could you clarify which test cases you are referring to?"
+  }
+]

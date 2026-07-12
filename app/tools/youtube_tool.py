@@ -40,9 +40,17 @@ async def fetch_youtube_transcript(url_or_id: str) -> str:
         video_id = url_or_id.strip()
 
     try:
-        # v1.x API: instantiate, then call .fetch()
         ytt_api = YouTubeTranscriptApi()
-        fetched_transcript = ytt_api.fetch(video_id)
+        transcript_list = ytt_api.list(video_id)
+        
+        try:
+            # Try to fetch English first
+            transcript = transcript_list.find_transcript(['en', 'en-US', 'en-GB'])
+        except Exception:
+            # Fallback to the first available transcript
+            transcript = next(iter(transcript_list))
+            
+        fetched_transcript = transcript.fetch()
 
         # Build plain text from transcript snippets
         transcript_text = " ".join([snippet.text for snippet in fetched_transcript])

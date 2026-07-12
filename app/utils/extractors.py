@@ -9,6 +9,7 @@ def extract_text_from_pdf(file_path: str) -> str:
     text = ""
     try:
         doc = fitz.open(file_path)
+        all_links = set()
         for page in doc:
             page_text = page.get_text()
             if page_text.strip():
@@ -23,6 +24,20 @@ def extract_text_from_pdf(file_path: str) -> str:
                     img.thumbnail((2000, 2000))
                 ocr_text = pytesseract.image_to_string(img)
                 text += ocr_text + "\n"
+                
+            # Extract hyperlinks
+            for link in page.get_links():
+                if 'uri' in link:
+                    all_links.add(link['uri'])
+                    
+        if all_links:
+            links_text = "--- Embedded Links ---\n"
+            for link in all_links:
+                links_text += f"- {link}\n"
+            links_text += "----------------------\n\n"
+            text = links_text + text
+
+                
         return text.strip()
     except Exception as e:
         return f"[Error extracting PDF: {str(e)}]"

@@ -1,0 +1,27 @@
+{
+  "is_ambiguous": false,
+  "follow_up_question": "",
+  "tool_calls": [
+    {
+      "tool_name": "fetch_youtube_transcript",
+      "parameters": {
+        "url_or_id": "https://www.youtube.com/watch?v=bAzYKBx5Tlo"
+      }
+    },
+    {
+      "tool_name": "summarize_text",
+      "parameters": {
+        "text": "{previous_output}"
+      }
+    },
+    {
+      "tool_name": "compare_documents",
+      "parameters": {
+        "text_a": "{previous_output}",
+        "text_b": "AI is not replacing jobs, but the body-shop model is failing.",
+        "query": "Does the handwritten note agree with the core argument of the video?"
+      }
+    }
+  ],
+  "reasoning": "The user wants to extract the core argument from the video and evaluate agreement with a handwritten note. First, retrieve the video transcript via fetch_youtube_transcript. Then summarize that transcript to isolate the core argument using summarize_text. Finally, compare the summarized argument with the note text using compare_documents to determine agreement."
+}

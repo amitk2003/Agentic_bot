@@ -45,3 +45,4 @@ from app.tools import qa_tool             # noqa: F401,E402
 from app.tools import comparator          # noqa: F401,E402
 from app.tools import sentiment_analyzer  # noqa: F401,E402
 from app.tools import direct_answer       # noqa: F401,E402
+from app.tools import web_fetcher         # noqa: F401,E402

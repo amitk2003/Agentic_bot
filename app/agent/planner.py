@@ -30,8 +30,8 @@ async def create_plan(user_input: UserInput) -> ExecutionPlan:
         for f in user_input.files:
             # Truncate extracted text for the planner (it only needs enough to decide which tool to use)
             extracted_preview = f.extracted_text or ""
-            if len(extracted_preview) > 3000:
-                extracted_preview = extracted_preview[:3000] + "\n... [truncated for planning, full text will be passed to the tool]"
+            if len(extracted_preview) > 15000:
+                extracted_preview = extracted_preview[:15000] + "\n... [truncated for planning, full text will be passed to the tool]"
             context += f"""
 Filename: {f.filename}
 Content Type: {f.content_type}
@@ -122,6 +122,60 @@ summarize_text
 Pass
 
 "text":"{{previous_output}}"
+
+fetch_web_content
+- whenever the user provides an external URL (like LinkedIn, blogs, websites)
+- whenever you need to fetch information from a link
+
+If external URL exists:
+
+Plan:
+
+fetch_web_content
+
+↓
+
+summarize_text (or other relevant tool)
+
+Pass
+
+"text":"{{previous_output}}"
+
+
+
+compare_documents
+- compare two documents
+- evaluate if an uploaded document agrees with a video or audio file
+
+If comparing a video/audio URL and an uploaded file:
+
+Plan:
+
+fetch_youtube_transcript (or fetch_web_content)
+
+↓
+
+compare_documents
+
+Pass
+
+"text_a":"{{previous_output}}"
+"text_b":"<extracted text from uploaded file>"
+"query":"<user's comparison query>"
+
+If comparing two uploaded files (e.g., Audio + PDF):
+
+Plan:
+
+compare_documents
+
+Pass
+
+"text_a":"{{file:<filename 1>}}"
+"text_b":"{{file:<filename 2>}}"
+"query":"<user's comparison query>"
+
+NOTE: Use {{file:<filename>}} to automatically inject the file's extracted text. DO NOT copy-paste the long extracted text yourself.
 
 direct_answer
 - greetings (hello, hi, etc.)

@@ -1,0 +1,13 @@
+{
+  "is_ambiguous": false,
+  "follow_up_question": "",
+  "tool_calls": [
+    {
+      "tool_name": "explain_code",
+      "parameters": {
+        "code": "#include <bits/stdc++.h>\nusing namespace std;\nint main() { return 0; }"
+      }
+    }
+  ],
+  "reasoning": "The user requests an explanation of a code snippet. The appropriate tool is explain_code, which will analyze the snippet, detect potential bugs, and estimate time/space complexity."
+}

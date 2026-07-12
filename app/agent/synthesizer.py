@@ -42,11 +42,12 @@ Current User Query:
 {user_input.query}
 
 Tool Execution Results:
-{results_context}
+{results_context if tool_results else "No tool outputs available."}
 
 Instructions:
 
-- Answer ONLY using the tool outputs.
+- Answer the user's query based primarily on the Tool Execution Results.
+- If there are no tool results, do your best to answer directly or explain that the query couldn't be processed by the tools.
 - Do not invent information.
 - Do not mention internal tools.
 - If the user requested bullet points, tables, markdown, or a specific format, preserve it.

@@ -43,7 +43,7 @@ async def process_request(user_input: UserInput) -> AgentResponse:
         plan_trace.append({"step": f"Executing Tool: {call.tool_name}", "status": "running", "details": str(call.parameters)[:200]})
     
     try:
-        tool_results = await execute_plan(plan)
+        tool_results = await execute_plan(plan, user_input.files)
         for res in tool_results:
             status = "completed" if res.status == "success" else "stopped"
             plan_trace.append({"step": f"Tool Result: {res.tool_name}", "status": status, "details": str(res.result)[:200]})
