@@ -1,0 +1,207 @@
+Test case 1: upload a 4 min audio file and ask chatbot to give transcription and summary of it: request:{ask for summary and transcription
+
+[Attached File: Let Me Love You - DJ Snake.mp3] summary +transcription:{**Summary**
+
+[1-Line Summary]  
+A resilient love anthem urging perseverance through heartbreak and adversity.  
+
+[3 Bullet Points]  
+- The narrator vows never to let go or give up, emphasizing steadfast commitment.  
+- Themes of heartbreak, struggle, and the "edge of a knife" illustrate emotional intensity.  
+- Repeated calls for love and resilience underscore the song’s hopeful, defiant tone.  
+
+[5-Sentence Summary]  
+The lyrics depict a relationship fraught with heartbreak yet driven by unwavering devotion.  
+The narrator repeatedly declares a refusal to let go or give up, reinforcing a theme of resilience.  
+Emotional imagery such as "the edge of a knife" and "darkest of days" highlights the intensity of the struggle.  
+Despite the hardships, the song maintains a hopeful tone, urging the partner to stay and love.  
+Ultimately, it serves as an anthem of perseverance and steadfast love in the face of adversity.}} 
+
+Testcase 2:" Attached pdf and ask question from it :
+what are core objective of this assignment?
+
+[Attached File: PM Gen AI Assignment (1).pdf] then i get this response:{Build a deployed, agentic application that can simultaneously accept multiple input types (text, images, PDFs, audio), extract and understand the content, determine the user’s goal, and autonomously execute the correct task—including complex, multi‑step queries that chain several tools—while asking a follow‑up question if the goal is unclear.}
+
+task3: use youtub url: Summarize this YouTube lecture: https://www.youtube.com/watch?v=bAzYKBx5Tlo 
+and tell to give summary of it:
+response:{**Summary of the lecture (video bAzYKBx5Tlo)**  
+
+- **Current job‑market reality**  
+  - In the first half of 2026, India lost > 168,000 tech jobs.  
+  - Fresh‑er hiring dropped by ~80 % (from 100 % to 20 % of previous levels).  
+  - Major employers (e.g., TCS, Oracle) cut offers drastically (TCS: 25,000 offers vs. 400 previously).  
+  - Oracle revoked offers for IIT/NIIT students after closing its AI‑health division, illustrating that layoffs were driven by corporate restructuring, not AI.
+
+- **Why the market collapsed**  
+  - The “body‑shop” model (hiring many freshers, training them, then assigning them to client projects) was already unsustainable.  
+  - COVID‑19 forced a correction: companies realized they didn’t need so many junior hires.  
+  - AI accelerated this correction by making routine coding tasks trivial, but it didn’t *create* the problem; it simply exposed an already fragile system.
+
+- **Misconception about AI**  
+  - AI hasn’t “stepped on” jobs; it has highlighted that many roles were replaceable long before AI existed.  
+  - The real issue is that the industry over‑valued rote learning (DSA, coding contests) while under‑valuing practical, system‑level skills.
+
+- **What the “new game” looks like**  
+  1. **Global Capability Centers (GCCs)** – Google, Amazon, JP Morgan, etc., will add 120k‑140k new roles that require AI, cloud, and data skills.  
+  2. **AI orchestration** – Treat AI as a junior developer: use it to write boilerplate, debug, and review, but not as a magic button.  
+  3. **System design** – Focus on architecture, scalability, and integration—areas AI struggles with.  
+  4. **Public building** – Publish projects on GitHub, LinkedIn, Discord, etc. Demonstrate real value rather than just certificates.
+
+- **Who will thrive**  
+  - Freshers who are *builders*: they create real projects, understand system design, and can work with AI tools.  
+  - Those who rely solely on AI for code generation (the “magic‑button” crowd) are replaceable.  
+  - The new metric is *ability* and *portfolio* rather than a degree.
+
+- **Take‑away**  
+  - AI didn’t take jobs; it revealed that the existing hiring model was flawed.  
+  - The future belongs to those who can combine AI with deep technical understanding and real‑world product building.  
+  - The speaker urges viewers to shift focus from rote learning to practical skills, public exposure, and AI‑augmented development.}
+
+Test case 4: given a  program snippet and ask to explained it
+request:{Explain this code:
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string longestPalindromeSubseq(string s) {
+    int n = s.size();
+
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    // Base case
+    for (int i = 0; i < n; i++)
+        dp[i][i] = 1;
+
+    // Fill DP table
+    for (int len = 2; len <= n; len++) {
+        for (int i = 0; i + len - 1 < n; i++) {
+            int j = i + len - 1;
+
+            if (s[i] == s[j]) {
+                if (len == 2)
+                    dp[i][j] = 2;
+                else
+                    dp[i][j] = 2 + dp[i + 1][j - 1];
+            } else {
+                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    int length = dp[0][n - 1];
+    string ans(length, ' ');
+
+    int start = 0;
+    int end = length - 1;
+
+    int i = 0, j = n - 1;
+
+    while (i <= j) {
+        if (s[i] == s[j]) {
+            ans[start] = s[i];
+            ans[end] = s[j];
+            start++;
+            end--;
+            i++;
+            j--;
+        } else if (dp[i + 1][j] >= dp[i][j - 1]) {
+            i++;
+        } else {
+            j--;
+        }
+    }
+
+    return ans;
+}
+
+int main() {
+    string s = "bbbab";
+
+    cout << "Longest Palindromic Subsequence: "
+         << longestPalindromeSubseq(s) << endl;
+} 
+
+response:{**What the program does**
+
+The program finds the *longest palindromic subsequence* (LPS) of a given string and prints that subsequence.  
+For the example string `"bbbab"` the output will be:
+
+```
+Longest Palindromic Subsequence: bbb
+```
+
+---
+
+### 1.  Overview of the algorithm
+
+1. **Dynamic programming table `dp`**  
+   `dp[i][j]` stores the length of the longest palindromic subsequence in the substring `s[i…j]`.
+
+2. **Filling the table**  
+   * Base case: a single character is a palindrome of length 1 → `dp[i][i] = 1`.  
+   * For every possible substring length `len` (from 2 up to `n`), iterate over all start indices `i`.  
+     * Let `j = i + len - 1` be the end index.  
+     * If `s[i] == s[j]`  
+       * If the substring has only two characters (`len == 2`) → `dp[i][j] = 2`.  
+       * Otherwise → `dp[i][j] = 2 + dp[i+1][j-1]` (the two matching ends plus the best inside).  
+     * If `s[i] != s[j]` → `dp[i][j] = max(dp[i+1][j], dp[i][j-1])` (skip one end).
+
+3. **Reconstructing the subsequence**  
+   * The length of the LPS is `dp[0][n-1]`.  
+   * Create a result string `ans` of that length, initially filled with spaces.  
+   * Use two pointers `i` (start) and `j` (end) to walk through the original string while simultaneously filling `ans` from both ends (`start` and `end` indices).  
+   * While `i <= j`:
+     * If `s[i] == s[j]`, place that character at both ends of `ans`, then move inward (`i++`, `j--`, `start++`, `end--`).  
+     * If the characters differ, look at the DP values:  
+       * If `dp[i+1][j] >= dp[i][j-1]`, skip `s[i]` (`i++`).  
+       * Else skip `s[j]` (`j--`).  
+   * When the loop finishes, `ans` contains the LPS.
+
+4. **Main function**  
+   * Calls `longestPalindromeSubseq` with `"bbbab"` and prints the result.
+
+---
+
+### 2.  Why it works
+
+* **DP correctness** – The recurrence mirrors the definition of a palindrome:  
+  * If the ends match, they can be part of the palindrome.  
+  * If they don’t, the best palindrome must lie entirely in one of the two smaller substrings.  
+  * By building up from length 1 to length n, every subproblem is solved before it’s needed.
+
+* **Reconstruction** – The DP table tells us which side to discard when the ends differ.  
+  * By following the same decisions that produced the DP values, we can rebuild one optimal subsequence.  
+  * Placing characters at both ends of `ans` guarantees the result is a palindrome.
+
+---
+
+### 3.  Complexity
+
+* **Time** – The DP table has `n × n` cells, each filled in O(1).  
+  * Filling: `O(n²)`  
+  * Reconstruction: `O(n)`  
+  * Total: `O(n²)`.
+
+* **Space** – The DP table uses `O(n²)` integers, plus the output string `O(n)`.  
+  * Total: `O(n²)`.
+
+---
+
+### 4.  Example walk‑through (`"bbbab"`)
+
+| Step | `i` | `j` | `s[i]` | `s[j]` | Action | `dp[i][j]` |
+|------|-----|-----|--------|--------|--------|------------|
+| 1    | 0   | 4   | b      | b      | match  | 5 (full LPS) |
+| 2    | 1   | 3   | b      | a      | skip `j` (dp[1][2] > dp[0][3]) | 3 |
+| 3    | 1   | 2   | b      | b      | match  | 3 |
+| 4    | 2   | 2   | b      | b      | base   | 1 |
+
+Reconstruction places `'b'` at both ends, then `'b'` again, finally the middle `'b'`, yielding `"bbb"`.
+
+---
+
+**Bottom line:**  
+The code uses a classic dynamic‑programming approach to compute the length of the longest palindromic subsequence and then reconstructs one such subsequence by backtracking through the DP table.}
+
+cross input reasoning: give resume pdf in that youtube or linkedin url is present  agent will extract that and give profile summary :  it is also done 
+comparison is also working fime as well

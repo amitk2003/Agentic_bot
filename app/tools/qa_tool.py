@@ -24,9 +24,15 @@ async def qa_tool(context: str, question: str) -> str:
     """
     Answers a question using ONLY the provided context.
     """
-    # Truncate to ~15000 chars to stay within Groq token limits
-    if len(context) > 15000:
-        context = context[:15000] + "\n... [context truncated]"
+    # Use RAG to fetch the most relevant chunks instead of truncating
+    from app.utils.rag import RAGSearcher
+    
+    # If the context is massive, use FAISS similarity search to get top chunks
+    if len(context) > 2000:
+        searcher = RAGSearcher(context)
+        relevant_context = searcher.search(question, top_k=5)
+    else:
+        relevant_context = context
 
     prompt = f"""
 You are an expert question-answering assistant.
@@ -47,7 +53,7 @@ Question:
 {question}
 
 Context:
-{context}
+{relevant_context}
 """
 
     try:
