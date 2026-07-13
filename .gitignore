@@ -1,1 +1,3 @@
 .env
+__pycache__/
+implementation_plan.txt
