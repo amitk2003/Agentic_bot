@@ -868,7 +868,65 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-    .left-sidebar { display: none; }
-    .right-sidebar { display: none; }
-    .mobile-menu-btn { display: block; }
+    /* Make left sidebar an off-canvas menu */
+    .left-sidebar { 
+        position: fixed;
+        left: -320px;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        width: 280px;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    
+    .left-sidebar.mobile-open {
+        left: 0;
+    }
+
+    /* Hide right sidebar completely on mobile */
+    .right-sidebar { 
+        display: none !important; 
+    }
+    
+    .mobile-menu-btn { 
+        display: block; 
+    }
+    
+    /* Hide trace button since trace panel is hidden on mobile */
+    #toggle-sidebar-btn {
+        display: none;
+    }
+    
+    /* Stack welcome cards */
+    .welcome-cards {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+    
+    .welcome-screen h2 {
+        font-size: 1.3rem;
+    }
+    
+    .welcome-screen > p {
+        font-size: 0.85rem;
+    }
+    
+    /* Adjust chat padding */
+    .chat-header {
+        padding: 10px 16px;
+    }
+    
+    .message-row {
+        padding: 12px 16px;
+    }
+    
+    .input-area {
+        padding: 0 12px 12px;
+    }
+    
+    /* Ensure code blocks don't overflow on small screens */
+    .msg-content pre {
+        max-width: calc(100vw - 32px);
+    }
 }

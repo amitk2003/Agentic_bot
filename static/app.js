@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightSidebar = document.getElementById('right-sidebar');
     const convList = document.getElementById('conversation-list');
     const newChatBtn = document.getElementById('new-chat-btn');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const leftSidebar = document.querySelector('.left-sidebar');
 
     let selectedFiles = [];
     let editingMessageEl = null;
@@ -41,6 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Sidebar Toggle =====
     toggleSidebarBtn.addEventListener('click', () => rightSidebar.classList.toggle('hidden'));
     closeSidebarBtn.addEventListener('click', () => rightSidebar.classList.add('hidden'));
+
+    // ===== Mobile Menu Toggle =====
+    mobileMenuBtn.addEventListener('click', () => {
+        leftSidebar.classList.toggle('mobile-open');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 900 && 
+            !leftSidebar.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target)) {
+            leftSidebar.classList.remove('mobile-open');
+        }
+    });
 
     // ===== Tabs =====
     tabBtns.forEach(btn => {
@@ -130,6 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
             item.addEventListener('click', (e) => {
                 if (e.target.closest('.conv-action-btn')) return;
                 loadConversation(conv.id);
+                if (window.innerWidth <= 900) {
+                    leftSidebar.classList.remove('mobile-open');
+                }
             });
 
             // Rename
