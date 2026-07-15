@@ -29,7 +29,7 @@ async def generate_and_save_title(conversation_id: str, query: str):
     except Exception as e:
         print(f"Failed to generate title: {e}")
 
-app = FastAPI(title="Agentic AI Multi-Modal Assistant")
+app = FastAPI(title="OmniAgent AI")
 
 app.add_middleware(
     CORSMiddleware,
